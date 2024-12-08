@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.biblioteca.util;
 
 /**
@@ -14,6 +10,17 @@ public abstract class DaoFactory {
 }
 
 class GenericDaoFactory extends DaoFactory {
+
+    private static GenericDaoFactory instance;
+
+    private GenericDaoFactory() {}
+
+    public static GenericDaoFactory getInstance() {
+        if (instance == null) {
+            instance = new GenericDaoFactory();
+        }
+        return instance;
+    }
 
     @Override
     public <T> Dao<T> criarDao(Class<T> clazz) {

@@ -22,7 +22,7 @@ public class MongoConnection {
 
     private MongoConnection() {
         String URI = "mongodb://localhost:27017";
-        String DATABASE = "fazenda";
+        String DATABASE = "biblioteca";
 
         CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),
