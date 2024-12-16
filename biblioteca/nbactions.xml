@@ -1,40 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
-    <actions>
-        <action>
-            <actionName>run</actionName>
-            <packagings>
-                <packaging>jar</packaging>
-            </packagings>
-            <goals>
-                <goal>clean</goal>
-                <goal>javafx:run</goal>
-            </goals>
-        </action>
-        <action>
-            <actionName>debug</actionName>
-            <goals>
-                <goal>clean</goal>
-                <goal>javafx:run@ide-debug</goal>
-            </goals>
-            <properties>
-                <jpda.listen>true</jpda.listen>
-            </properties>
-        </action>
-        <action>
-            <actionName>profile</actionName>
-            <goals>
-                <goal>clean</goal>
-                <goal>javafx:run@ide-profile</goal>
-            </goals>
-        </action>
-        <action>
-            <actionName>CUSTOM-jlink</actionName>
-            <displayName>jlink</displayName>
-            <goals>
-                <goal>clean</goal>
-                <!-- compile not needed with javafx-maven-plugin v0.0.5 -->
-                <goal>compile</goal>
-                <goal>javafx:jlink</goal>
-            </goals>
-        </action>
-    </actions>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Identificação do Projeto -->
+    <groupId>com.biblioteca</groupId>
+    <artifactId>biblioteca</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <!-- Propriedades -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <javafx.version>17</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Dependências -->
+    <dependencies>
+        <!-- MongoDB Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>4.10.2</version>
+        </dependency>
+
+        <!-- JavaFX Dependências -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+    </dependencies>
+
+    <!-- Plugins -->
+    <build>
+        <plugins>
+            <!-- Plugin do Maven Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+            <!-- JavaFX Maven Plugin -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>com.App</mainClass> <!-- Substitua com sua classe principal -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

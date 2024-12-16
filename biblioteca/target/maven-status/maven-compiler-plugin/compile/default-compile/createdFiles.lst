@@ -7,7 +7,6 @@ com\biblioteca\modelo\Aluno.class
 com\biblioteca\Telaprincipalcontrole.class
 com\biblioteca\util\GenericDaoFactory.class
 com\biblioteca\Registraratendentecontrole.class
-module-info.class
 com\biblioteca\modelo\Livro.class
 com\biblioteca\App.class
 com\biblioteca\modelo\Devolucao.class

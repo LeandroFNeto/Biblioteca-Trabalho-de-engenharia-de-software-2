@@ -4,14 +4,20 @@
  */
 package com.biblioteca.modelo;
 
-/**
- * Classe que representa um Atendente do sistema.
- * Ele é responsável por cadastrar e gerenciar alunos e livros.
- */
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.codecs.pojo.annotations.BsonId;
+
 public class Atendente {
-    private String id; // Identificador único do atendente
+    @BsonId
+    private String id;
+
+    @BsonProperty("nome")
     private String nome;
+
+    @BsonProperty("login")
     private String login;
+
+    @BsonProperty("senha")
     private String senha;
 
     public Atendente() {}

@@ -22,7 +22,8 @@ public class Observavel {
         observers.remove(observer);
     }
 
-    public void notificar(String mensagem) {
+
+    public void notificarObservadores(String mensagem) {
         for (Observer observer : observers) {
             observer.atualizar(mensagem);
         }

@@ -1,17 +1,18 @@
 package com.biblioteca;
 
 import com.biblioteca.modelo.Atendente;
+import com.biblioteca.util.Dao;
+import com.biblioteca.util.GenericDaoFactory;
 import java.io.IOException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
-import com.biblioteca.util.Dao;
-
 
 /**
  * Classe de controle para a tela de registro de atendentes.
+ * Refatorada para aplicar padrões de projeto: Singleton, Observer e Factory Method.
  */
 public class Registraratendentecontrole {
 
@@ -27,14 +28,19 @@ public class Registraratendentecontrole {
     @FXML
     private PasswordField campoSenha; // Campo de texto para a senha
 
-    private Dao<Atendente> daoAtendente; // DAO para manipulação do banco de dados
+    private final Dao<Atendente> daoAtendente; // DAO para manipulação do banco de dados
 
     public Registraratendentecontrole() {
         try {
-            daoAtendente = new Dao<>(Atendente.class);
+            // Cria o DAO utilizando o Factory Method
+            daoAtendente = GenericDaoFactory.getInstance().criarDao(Atendente.class);
+
+            // Adiciona um Observer ao DAO para monitorar mudanças
+            daoAtendente.adicionarObserver(mensagem -> System.out.println("Notificação: " + mensagem));
         } catch (Exception e) {
             mostrarAlerta("Erro", "Erro ao inicializar o DAO: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
+            throw new RuntimeException("Falha ao inicializar a classe de controle", e);
         }
     }
 
@@ -86,8 +92,13 @@ public class Registraratendentecontrole {
      * Método chamado quando o botão "Voltar" é clicado.
      */
     @FXML
-    private void voltarTelaPrincipal(ActionEvent event) throws IOException {
-        App.setRoot("telaprincipal");
+    private void voltarTelaPrincipal(ActionEvent event) {
+        try {
+            App.setRoot("telaprincipal");
+        } catch (IOException e) {
+            mostrarAlerta("Erro", "Erro ao voltar para a tela principal: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
     /**

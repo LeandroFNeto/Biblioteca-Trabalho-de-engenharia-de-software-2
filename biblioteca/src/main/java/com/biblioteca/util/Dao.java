@@ -1,46 +1,48 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.biblioteca.util;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.bson.Document;
 
 /**
  * Classe genérica para manipulação de dados com o MongoDB.
- * @param <T> Tipo da entidade
+ * Agora integrada ao padrão Observer para notificações.
+ *
+ * @param <T> Tipo da entidade.
  */
-public class Dao<T> {
+public class Dao<T> extends Observavel {
 
-    private final MongoDatabase database;
     private final MongoCollection<T> collection;
 
-    public Dao(Class<T> clazz) {
-        MongoConnection connection = MongoConnection.getInstance();
-        this.database = connection.getDatabase();
-        this.collection = database.getCollection(clazz.getName(), clazz);
+    public Dao(Class<T> clazz, MongoDatabase database) {
+        this.collection = database.getCollection(clazz.getSimpleName().toLowerCase(), clazz);
     }
 
     public void inserir(T objeto) {
         collection.insertOne(objeto);
+        notificarObservadores("Inserção realizada: " + objeto);
     }
 
     public T buscarPorChave(String chave, String valor) {
-        return collection.find(new Document(chave, valor)).first();
+        T resultado = collection.find(new Document(chave, valor)).first();
+        notificarObservadores("Busca realizada por chave: " + chave + " com valor: " + valor);
+        return resultado;
     }
 
     public void alterar(String chave, String valor, T novo) {
         collection.replaceOne(new Document(chave, valor), novo);
+        notificarObservadores("Alteração realizada para chave: " + chave);
     }
 
     public boolean excluir(String chave, String valor) {
         DeleteResult result = collection.deleteOne(new Document(chave, valor));
+        notificarObservadores("Exclusão realizada para chave: " + chave + ", sucesso: " + (result.getDeletedCount() > 0));
         return result.getDeletedCount() > 0;
     }
 
@@ -51,6 +53,7 @@ public class Dao<T> {
                 lista.add(cursor.next());
             }
         }
+        notificarObservadores("Listagem completa realizada.");
         return lista;
     }
 }
